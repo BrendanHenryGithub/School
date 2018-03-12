@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1520841995 source:f:\adam\cpp_project\genetic_algorithm\main.cpp
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	<math.h>
+
