@@ -3,11 +3,11 @@
 #include <time.h>
 #include <math.h>
 
-#define POPSIZE 500
+#define POPSIZE 100
 #define CHROMLENGTH 24
-#define MaxGeneration 500
-#define CROSSPERCENT 0.6
-#define MUTAPERCENT 0.001
+#define MaxGeneration 1000000
+#define CROSSPERCENT 0.1
+#define MUTAPERCENT 0.01
 #define LEFTSCOPE -2.048
 #define RIGHTSCOPE 2.048
 
@@ -16,6 +16,7 @@ typedef struct {
     double value1;
     double value2;
     double evaluatesScore;
+    double percent;
 } GENE;
 
 double TargetFunction(double, double);
@@ -27,6 +28,7 @@ void DecimalValue(GENE *);
 void CopyStruct(GENE * ,GENE *);
 void GeneCalcul(GENE *);
 void GenerateNextPopulation(GENE *);
+void CalculPercent(GENE * );
 void SelectionOperator(GENE *);
 void CrossoverOperator(GENE *);
 void MutationOperator(GENE *);
@@ -38,10 +40,14 @@ int main(){
     int Generation=0;
     GenerateInitialPopulation(Gene);
     InitialEvaluatePopulation(Gene,&BGene);
+    double lastBestScore=0;
     while(Generation<MaxGeneration){
         ++Generation;
-        ResultPrint(Generation,&BGene);
+        if(BGene.evaluatesScore>lastBestScore){
+            ResultPrint(Generation,&BGene);
+        }
         GenerateNextPopulation(Gene);
+        lastBestScore=BGene.evaluatesScore;
         EvaluatePopulation(Gene,&BGene);
     }
     return 0;
@@ -56,9 +62,9 @@ void GenerateInitialPopulation(GENE *Gene){
 }
 
 void CopyStruct(GENE *x,GENE *y){
-    (*x).evaluatesScore=(*y).evaluatesScore;
     (*x).value1=(*y).value1;
     (*x).value2=(*y).value2;
+    (*x).evaluatesScore=(*y).evaluatesScore;
     for (int i=0;i<CHROMLENGTH;++i){
         (*x).gene[i]=(*y).gene[i];
     }
@@ -117,26 +123,31 @@ void GenerateNextPopulation(GENE * Gene){
     MutationOperator(Gene);
 }
 
-void SelectionOperator(GENE * Gene){
+void CalculPercent(GENE * Gene){
     double sum=0;
-    double randvalue;
-    double tmpsum=0;
     for (int i=0;i<POPSIZE;++i){
         sum+=Gene[i].evaluatesScore;
     }
-    double percent[POPSIZE];
     for (int i=0;i<POPSIZE;++i){
-        percent[i]=Gene[i].evaluatesScore/sum;
+        Gene[i].percent=Gene[i].evaluatesScore/sum;
     }
-    int j;
+}
+
+void SelectionOperator(GENE * Gene){
+    CalculPercent(Gene);
     GENE Genetmp[POPSIZE];
     for (int i=0;i<POPSIZE;++i){
-        randvalue=rand()*1.0/RAND_MAX;
-        for (int i=0;randvalue>tmpsum;++i){
-            tmpsum+=percent[i];
-            j=i;
+        double randvalue=rand()*1.0/RAND_MAX;
+        double tmpsum=0;
+        for(int j=0;j<POPSIZE;++j){
+            if(tmpsum<randvalue){
+                tmpsum+=Gene[j].percent;
+            }
+            else{
+                CopyStruct(&Genetmp[i],&Gene[j]);
+                break;
+            }
         }
-        CopyStruct(&Genetmp[i],&Gene[j]);
     }
     for (int i=0;i<POPSIZE;++i){
         CopyStruct(&Gene[i],&Genetmp[i]);
@@ -144,11 +155,10 @@ void SelectionOperator(GENE * Gene){
 }
 
 void CrossoverOperator(GENE * Gene){
-    int randvalue;
     int tmp;
     for (int i=0;i<POPSIZE-1;i+=2){
-        if (rand()*1.0/RAND_MAX<CROSSPERCENT){
-            randvalue=rand()%CHROMLENGTH;
+        if (rand()*1.0/RAND_MAX < CROSSPERCENT){
+            int randvalue=rand()%CHROMLENGTH;
             for (int j=randvalue;j<CHROMLENGTH;++j){
                 tmp=Gene[i].gene[j];
                 Gene[i].gene[j]=Gene[i+1].gene[j];
@@ -161,7 +171,7 @@ void CrossoverOperator(GENE * Gene){
 void MutationOperator(GENE * Gene){
     for (int i=0;i<POPSIZE;++i){
         for (int j=0;j<CHROMLENGTH;++j){
-            if(rand()*1.0/RAND_MAX<MUTAPERCENT){
+            if(rand()*1.0/RAND_MAX < MUTAPERCENT){
                 if(Gene[i].gene[j]==0){
                     Gene[i].gene[j]=1;
                 }
@@ -174,6 +184,6 @@ void MutationOperator(GENE * Gene){
 }
 
 void ResultPrint(int Generation, GENE *BGene){
-    printf("第%d代产生的最优解为：x1=%lf, x2=%lf, 目标函数取值为:%lf\n",
+    printf("在第%d代找到一个新的最优解：x1=%lf, x2=%lf, 目标函数取值为:%lf\n",
         Generation,(*BGene).value1,(*BGene).value2,(*BGene).evaluatesScore);
 }
