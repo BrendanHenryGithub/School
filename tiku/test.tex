@@ -1,0 +1,134 @@
+\documentclass[UTF8]{ctexart}
+    \usepackage{amsmath}
+    \usepackage{amssymb}
+    \usepackage{esint}
+    \begin{document}
+        \begin{enumerate}
+            \item 
+            $$\textsc{设} \sigma \textsc{是锥面}z=\sqrt{x^2+y^2}(0 \leq z \leq 1),\textsc{则} \iint_{\sigma} (x^2+y^2) dS=( )$$
+            $$A. \int_{0}^{\pi}d\theta\int_{0}^{1}r^{2}\cdot rdr$$
+            $$B. \int_{0}^{2\pi}d\theta\int_{0}^{1}r^{2}\cdot rdr$$
+            $$C. \sqrt{2}\int_{0}^{\pi}d\theta\int_{0}^{1}r^{2}\cdot rdr$$
+            $$D. \sqrt{2}\int_{0}^{2\pi}d\theta\int_{0}^{1}r^{2}\cdot rdr$$
+            $$D$$
+            $$\sigma \textsc{在}xOy\textsc{面上的投影为}D_{xy}: x^2+y^2\leq 1,$$
+            \begin{align*}
+                \iint_{\sigma}(x^2+y^2)dS &=\iint_{D_{xy}}(x^2+y^2)\sqrt{1+(z_{x})^2+(z_{y})^2}dxdy \\
+                &=\sqrt{2}\int_{0}^{2\pi}d\theta\int_{0}^{1}r^{2}\cdot rdr.
+            \end{align*}
+
+            \item
+            $$\textsc{设} \sigma \textsc{为曲面} z=2-(x^2+y^2) \textsc{在}xOy\textsc{平面上方部分,则}\int_{\sigma}ds=()$$
+            $$A. \int_0^{2\pi}d\theta\int_0^{\sqrt{2}}\sqrt{1+4r^{2}}rdr$$
+            $$B. \int_0^{2\pi}d\theta\int_0^{\pi}\sqrt{1+4r^{2}}rdr$$
+            $$C. \int_0^{2\pi}d\theta\int_0^{2}\sqrt{1+4r^{2}}rdr$$
+            $$D. \int_0^{2\pi}d\theta\int_0^{2}(2-r^2)\sqrt{1+4r^{2}}rdr$$
+            $$A$$
+            \begin{align*}
+                I &= \iint \limits_{x^2+y^2\leq2} \sqrt{1+(-2x)^2+(-2y)^2}dxdy\\
+                &=\int_0^{2\pi}d\theta\int_0^{\sqrt{2}}\sqrt{1+4r^2}rdr
+            \end{align*}
+
+            \item
+            $$\textsc{设} \sigma \textsc{为曲面} z=2-(x^2+y^2) \textsc{在}xOy\textsc{平面上方部分,则}I=\int_{\sigma}zdS=()$$
+            $$A. \int_0^{2\pi}d\theta\int_0^{\sqrt{2}}(2-r^2)\sqrt{1+4r^{2}}rdr$$
+            $$B. \int_0^{2\pi}d\theta\int_0^{2r^2}(2-r^2)\sqrt{1+4r^{2}}rdr$$
+            $$C. \int_0^{2\pi}d\theta\int_0^{2}(2-r^2)\sqrt{1+4r^{2}}rdr$$
+            $$D. \int_0^{2\pi}d\theta\int_0^{\sqrt{2}}(2-r^2)rdr$$
+            $$A$$
+            \begin{align*}
+                I &= \iint \limits_{x^2+y^2\leq2} (2-x^2-y^2)\sqrt{1+(-2x)^2+(-2y)^2}dxdy\\
+                &=\int_0^{2\pi}d\theta\int_0^{\sqrt{2}}(2-r^2)\sqrt{1+4r^2}rdr
+            \end{align*}
+
+            \item
+            $$\textsc{设} \sigma \textsc{是锥面} z=\sqrt{x^2+y^2}(0 leq z leq 1) \textsc{则}\iint_{\sigma}x^2+y^2dS=()$$
+            $$A. \sqrt{2}\int_0^{2\pi}d\theta\int_0^{1}r^2\cdot rdr$$
+            $$B. \int_0^{\pi}d\theta\int_0^{1}r^2\cdot rdr$$
+            $$A. \sqrt{2}\int_0^{2\pi}d\theta\int_0^{1}r^2\cdot rdr$$
+            $$D. \sqrt{2}\int_0^{\pi}d\theta\int_0^{1}r^2\cdot rdr$$
+            $$A$$
+            $$\sigma\textsc{在}xOy\textsc{面上的投影为}D_{xy}:x^2+y^2 \leq 1,$$
+            \begin{align*}
+                \iint \limits_{\sigma}(x^2+y^2)dS &= \iint \limits_{D_{xy}} (x^2+y^2)\sqrt{1+(z_x)^2+(z_y)^2}dxdy\\
+                &=\sqrt{2}\int_0^{2\pi}d\theta\int_0^{1}r^2\cdot rdr
+            \end{align*}
+
+            \item
+            $$\textsc{设}\sigma\textsc{为}x^2+y^2+z^2=a^2\textsc{,则}\varoiint \limits_{\sigma} (x^2+y^2+z^2)dS=()$$
+            $$A. 4\pi a^4$$
+            $$B. 4\pi a^2$$
+            $$C. 2\pi a^4$$
+            $$D. \pi a^4$$
+            $$A$$
+            $$\varoiint \limits_{\sigma} (x^2+y^2+z^2)dS=a^2\varoiint \limits_{\sigma}dS=a^2\cdot 4\pi a^2=4\pi a^4$$
+
+            \item
+            $$\textsc{设}\sigma\textsc{为曲面}x^2+y^2+z^2=a^2\textsc{,则}\varoiint \limits_{\sigma} xyzdS=()$$
+            $$A. 0$$
+            $$B. 4\pi a^4$$
+            $$C. \frac{4}{3}\pi a^4$$
+            $$D. \frac{2}{3}\pi a^4$$
+            $$A$$
+            $$\textsc{由于}\sigma\textsc{关于坐标面}xOy,yOz,zOx \textsc{均对称,}$$
+            $$\textsc{且被积函数关于}x,y,z\textsc{是奇函数，所以有}\varoiint \limits_{\sigma} xyzdS=0$$
+
+            \item
+            $$\textsc{设}\sigma:x^2+y^2+z^2=R^2\textsc{,则}\varoiint \limits_{\sigma} (x+y+z)dS=()$$
+            $$A. 0$$
+            $$B. \frac{4}{3}\pi R^4$$
+            $$C. 4\pi R^4$$
+            $$B. \frac{2}{3}\pi R^4$$
+            $$A$$
+            $$\textsc{由于} \sigma \textsc{关于三个坐标面对称，}$$
+            $$ \varoiint \limits_{\sigma}xdS\textsc{关于}x\textsc{是奇函数，所以}\varoiint \limits_{\sigma}xdS=0;$$
+            $$ \textsc{同理}\varoiint \limits_{\sigma}ydS=0,\varoiint \limits_{\sigma}zdS=0 $$
+            $$ \textsc{所以}\varoiint \limits_{\sigma} (x+y+z)dS=0$$
+
+            \item
+            $$\textsc{设}\sigma : x^2+y^2+z^2=a^2(z geq 0), \sigma_1 \textsc{为}\sigma \textsc{在第一卦限中的部分，则下面运算正确的是}()$$
+            $$A. \iint \limits_{\sigma} zdS=4\iint \limits_{\sigma_1}xdS$$
+            $$B. \iint \limits_{\sigma} xdS=4\iint \limits_{\sigma_1}xdS$$
+            $$C. \iint \limits_{\sigma} ydS=4\iint \limits_{\sigma_1}xdS$$
+            $$D. \iint \limits_{\sigma} xyzdS=4\iint \limits_{\sigma_1}xyzdS$$
+            $$A$$
+            $$\textsc{由于积分区域}\sigma \textsc{关于}x,y\textsc{的位置对称,因此可知有}\iint \limits_{\sigma}xdS=\iint \limits_{\sigma}ydS,$$
+            $$\textsc{又由于}\iint \limits_{\sigma} xdS\textsc{被积函数为}x\textsc{的奇函数，}\sigma\textsc{关于平面}xOy\textsc{对称，因此}\iint \limits_{\sigma}xdS=0$$
+            $$\textsc{而}\iint \limits_{\sigma}xdS\geq 0.$$
+            $$\textsc{同样，对于确定的}y\textsc{和}z,\textsc{函数}xyz\textsc{为}x\textsc{的奇函数，积分区域}S\textsc{关于}yOz\textsc{平面对称,}$$
+            $$\textsc{因此}\iint \limits_{\sigma}xyzdS=0,\textsc{而}\iint \limits_{\sigma}xyzdS \geq 0.$$
+            $$\textsc{积分区域}\sigma\textsc{关于} xOz \textsc{平面都对称,}\iint \limits_{\sigma}zdS\textsc{中被积函数为} x\textsc{的偶函数，}$$
+            $$\textsc{也为} y\textsc{的偶函数，由对称性知} \iint \limits_{\sigma}zdS=4\iint \limits_{\sigma}xdS.$$
+
+            \item
+            $$\textsc{设}\sigma\textsc{为球面}x^2+y^2+z^2=a^2\textsc{在}z \geq h\textsc{的部分,}0<h<a,\textsc{则}\int \limits_{\sigma}zdS=()$$
+            $$A. \int_0^{2\pi}d\theta\int_0^{\sqrt{a^2-h^2}}ardr$$
+            $$B. \int_0^{2\pi}d\theta\int_0^{a^2-h^2}\sqrt{a^2-r^2}rdr$$
+            $$C. \int_0^{2\pi}d\theta\int_0^{\sqrt{a^2-h^2}}\sqrt{a^2-r^2}rdr$$
+            $$A. \int_0^{2\pi}d\theta\int_{-\sqrt{a^2-h^2}}^{\sqrt{a^2-h^2}}ardr$$
+            $$A$$
+            $$\sigma\textsc{在}xOy\textsc{面上的投影为：}x^2+y^2=a^2-h^2,$$
+            $$z=\sqrt{a^2-x^2-y^2}$$
+            \begin{align*}      
+                \int \limits_{\sigma}zdS &= \iint \limits_{x^2+y^2 \leq a^2 - h^2} \sqrt{a^2-x^2-y^2}\sqrt{1+(z_x)^2+(z_y)^2}dxdy \\
+                &= \iint \limits_{x^2+y^2 \leq a^2 - h^2}adxdy 
+            \end{align*}
+
+            \item
+            $$\textsc{已知}\sigma\textsc{为曲面}z=x^2+y^2\textsc{被平面}z=1\textsc{所截部分,则}\iint \limits_{\sigma} |xyz|dS=()$$
+            $$A. 2\int_0^1 r^5\sqrt{1+4r^2}dr$$
+            $$B. 4\int_0^1 r^5\sqrt{1+4r^2}dr$$
+            $$C. 6\int_0^1 r^5\sqrt{1+4r^2}dr$$
+            $$D. 8\int_0^1 r^5\sqrt{1+4r^2}dr$$
+            $$A$$
+            $$\sigma \textsc{在平面}xOy\textsc{上的投影}D_{xy}:x^2+y^2=1,$$
+            $$\sqrt{1+(z_x)^2+(z_y)^2}=\sqrt{1+4(x^2+y^2)},$$
+            $$\textsc{利用极坐标,并由对称性,即得}$$
+            \begin{align*}
+                \iint \limits_{\sigma} |xyz|dS &=4\int_0^{\frac{\pi}{2}}d\theta\int_0^1 r^4 cos\theta sin\theta \sqrt{1+4r^2}rdr \\
+                &=2\int_0^1 r^5\sqrt{1+4r^2}dr
+            \end{align*}
+        \end{enumerate}
+        
+    
+    \end{document}
