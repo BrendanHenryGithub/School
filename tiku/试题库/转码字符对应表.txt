@@ -1,0 +1,12 @@
+r %3D ae %5E %7B %5C theta %7D %5C kern %7B 8px %7D %28 - %5C pi %5C le %5C theta %5C le %5C pi %29 %20
+r  =  ae ^   {   \   theta   } \   kern {   8px  }  (   - \   pi  \  le \   theta \   le  \  pi )
+
+r %3D 3 %5C rm %7Bc %7D %5C rm %7Bo %7D %5C rm %7Bs %7D %5C theta %20
+
+r %3D 1+ %5C rm %7B c %7D %5C rm %7B o %7D %5C rm %7Bs %7D %5C theta %20
+
+A %3D %28 %5C kern %7B 16px %7D %29. %20
+
+
+r %5E %7B 2 %7D %3D 2+ %5C rm %7B c %7D %5C rm %7B o %7D %5C rm %7B s %7D %5C theta %5C kern %7B 8px %7D %28 0 %5C le %5C theta %5C le 2 %5C pi %29 %20
+r ^   {   2  }  =   2+  \  rm {   c   }  \  rm {   o   }  \  rm {   s   }  \  theta \   kern  {  8px   }  (  0 \   le  \  theta  \  le 2 \   pi  )

@@ -1,0 +1,1989 @@
+<HTML>
+
+<HEAD>
+    <TITLE>试题列表</TITLE>
+</HEAD>
+
+<BODY oncontextmenu=window.event.returnValue=false onload=opener.ChangeNum(565)>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <META content=IE=EmulateIE7 http-equiv=X-UA-Compatible>
+    <LINK rel=stylesheet type=text/css href="styles/publicDefine.css">
+    <LINK rel=stylesheet type=text/css href="styles/examlist.css">
+    <STYLE type=text/css>
+        .question a {
+            color: #CC0000;
+        }
+    </STYLE>
+
+    <SCRIPT type=text/javascript src="uploadfile/flv/swfobject.js"></SCRIPT>
+
+    <SCRIPT type=text/javascript src="uploadfile/flv/1bit.js"></SCRIPT>
+
+    <SCRIPT language=javascript>
+        $ = function (id) { return document.getElementById(id); }
+        function SHAnswer(obj) {
+            if (obj.src.indexOf("open") >= 0) {
+                obj.src = "images/gclose.jpg";
+                var objTemp;
+                objTemp = obj.parentNode.nextSibling;
+                objTemp.style.display = "block";
+                //objTemp.innerHTML = objTemp.innerHTML;	
+                SYLatexEngine.RenderNode(objTemp);
+                //SYLatexEngine.RenderNode(objTemp);
+            }
+            else {
+                obj.src = "images/gopen.jpg"
+                obj.parentNode.nextSibling.style.display = "none";
+            }
+        }
+        function ChangeKBg(obj) {
+            obj.style.backgroundColor = "#0068b7";
+            obj.style.color = "#FFFFFF";
+        }
+
+        function BackKBg(obj) {
+            obj.style.backgroundColor = "#dce6ee";
+            obj.style.color = "#0f3460";
+        }
+        var NowTitleInforID, NowKnowledgeID, FromToType;
+        //function ShowRight(TitileInforID,KnowledgeID)
+        //{
+        //	if((parseInt(window.event.button)%2) ==0)
+        //	{		
+        //		obj = $("KWindow");
+        //		obj.style.display = "block";
+        //		var x=document.documentElement.scrollLeft + event.x;
+        //        var y= event.y;	
+        //		if( navigator.appVersion.indexOf("MSIE 6.0") >= 0 )
+        //	   {
+        //			  y = document.documentElement.scrollTop + y;
+        //	   }
+        //		obj.style.left = x;
+        //		obj.style.top = y;
+        //		NowTitleInforID = TitileInforID;
+        //		NowKnowledgeID = KnowledgeID;
+        //	}
+        //}
+        function SelectTest(SelectType, obj) {
+            var MaxID = ID.length;
+            NowTitleInforID = "";
+            if (obj.id == 'SelectPage') {
+                $("SelectAll").checked = false;
+            }
+            else {
+                $("SelectPage").checked = false;
+            }
+            for (i = 0; i < MaxID; i++) {
+                if (obj.checked == true) {
+                    ID[i].checked = true;
+                }
+                else {
+                    ID[i].checked = false;
+                }
+                if (NowTitleInforID == "") {
+                    NowTitleInforID = ID[i].value;
+                }
+                else {
+                    NowTitleInforID = NowTitleInforID + "," + ID[i].value;
+                }
+            }
+            if (SelectType == 'All') {
+                var xmlhttp = new ActiveXObject("Msxml2.xmlhttp");
+                xmlhttp.open("GET", "test.asp?DoType=SelectAll&KnowledgeID=565", false);
+                xmlhttp.send();
+                NowTitleInforID = bytes2BSTR(xmlhttp.ResponseBody);
+            }
+        }
+        function GetSelect(FTType) {
+            //NowTitleInforID = ""
+            if ($("ID") == null) {
+                alert("请先选择试题，再进行操作！")
+                return;
+            }
+            if (!$("SelectAll").checked) {
+                var MaxID = ID.length;
+                NowTitleInforID = "";
+                if (MaxID) {
+                    for (i = 0; i < MaxID; i++) {
+                        if (ID[i].checked == true) {
+                            if (NowTitleInforID == "") {
+                                NowTitleInforID = ID[i].value;
+                            }
+                            else {
+                                NowTitleInforID = NowTitleInforID + "," + ID[i].value;
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (ID.checked == true) NowTitleInforID = ID.value;
+                }
+            }
+            if (NowTitleInforID == "") {
+                alert("请先选取出需要操作的试题");
+            }
+            else {
+                //alert(NowTitleInforID);	
+                NowKnowledgeID = 565;
+                if (FTType == "Del") {
+                    GoEdit("Del");
+                }
+                else {
+                    ShowWindow(FTType);
+                }
+            }
+        }
+        function FromTo(KnowledgeID) {
+            if (window.confirm("确实要移动到当前位置吗?")) {
+                if ($("SelectAll").checked) {
+                    window.location.href = "testDetail.asp?edit=" + FromToType + "&ShareType=Share&TitleInforID=all&KnowledgeID=" + NowKnowledgeID + "&ToKnowledgeID=" + KnowledgeID;
+                }
+                else {
+                    window.location.href = "testDetail.asp?edit=" + FromToType + "&ShareType=Share&TitleInforID=" + NowTitleInforID + "&KnowledgeID=" + NowKnowledgeID + "&ToKnowledgeID=" + KnowledgeID;
+                }
+            }
+            opener.ChangeNum(KnowledgeID)
+            $("Window").style.display = "";
+            $("Over").style.display = "";
+        }
+        function GoEdit(EditType) {
+            //$("KWindow").style.display = "none";
+            switch (EditType) {
+                case "Edit":
+                    window.location.href = "testcontent.asp?edit=Edit&KnowledgeID=" + NowKnowledgeID + "&TitleInforID=" + NowTitleInforID;
+                    break;
+                case "Del":
+                    if (window.confirm("确实要删除吗？")) {
+                        window.location.href = "testDetail.asp?edit=Del&TitleInforID=" + NowTitleInforID + "&KnowledgeID=" + NowKnowledgeID;
+                    }
+            }
+
+        }
+        function HideShow() {
+            //$("KWindow").style.display = "none";
+        }
+        function ChangeBg(Obj) {
+            Obj.cells[0].style.backgroundColor = "#e1ecf8";
+            Obj.cells[1].style.backgroundColor = "#e1ecf8";
+        }
+
+        function BackBg(Obj) {
+            Obj.cells[0].style.backgroundColor = "";
+            Obj.cells[1].style.backgroundColor = "";
+        }
+        function ShowNext(KnowledgeID, CourseID) {
+            var NextName = "Next_" + KnowledgeID;
+            var ImgName = "img_" + KnowledgeID;
+            if ($(ImgName).src.indexOf("fclose") > 0) {
+                $(NextName).style.display = "none";
+                $(ImgName).src = "images/new/fopen.gif";
+            }
+            else {
+                $(NextName).style.display = "block";
+                $(ImgName).src = "images/new/fclose.gif";
+                if ($(NextName).cells[0].innerHTML == "") {
+                    var xmlhttp = new ActiveXObject("Msxml2.xmlhttp");
+                    xmlhttp.open("GET", "knowledge.asp?DoType=CallList&FromToType=" + FromToType + "&ShareType=Share&CourseID=" + CourseID + "&KnowledgeID=" + KnowledgeID, false);
+                    xmlhttp.send();
+                    $(NextName).cells[0].innerHTML = bytes2BSTR(xmlhttp.ResponseBody);
+                }
+            }
+        }
+        function ShowWindow(FTType) {
+            FromToType = FTType;
+            var xmlhttp = new ActiveXObject("Msxml2.xmlhttp");
+            xmlhttp.open("GET", "knowledge.asp?DoType=CallList&FromToType=" + FromToType + "&ShareType=Share&CourseID=1&KnowledgeID=0", false);
+            xmlhttp.send();
+            $("List1").innerHTML = bytes2BSTR(xmlhttp.ResponseBody);
+            //$("KWindow").style.display = "none";
+            $("Window").style.display = "block";
+            $("Window").style.top = $("Window").offsetTop + document.documentElement.scrollTop;
+            $("Window").style.left = $("Window").offsetLeft + document.documentElement.scrollLeft;
+            $("Over").style.display = "block";
+            $("Over").style.height = document.body.offsetHeight;
+        }
+        function HideWindow() {
+            $("Window").style.display = "none";
+            $("Over").style.display = "none";
+        }
+        function ChangeColor(obj) {
+            obj.style.background = "#eef5fa";
+        }
+        function BackColor(obj) {
+            obj.style.background = "";
+        }
+        function Choose(TID) {
+            opener.Choose(TID);
+        }
+        function OpenChoose(TID, OpenType, ModelID) {
+            var MID = 0;
+            if (OpenType == 'Edit') { MID = parseInt(ModelID); }
+            var xmlhttp = new ActiveXObject("Msxml2.xmlhttp");
+            xmlhttp.open("GET", "folder.asp?DoType=AddPaperModel&SaveKindID=&TitleInforID=" + TID + "&ModelID=" + MID, false);
+            xmlhttp.send();
+            opener.ShowTitle(bytes2BSTR(xmlhttp.ResponseBody));
+            window.close();
+        }
+        function ChangeTitleType(obj) {
+            if (obj.value == 0) { return false; }
+            var url = window.location.href;
+            var Url;
+            if (url.indexOf("TitleTypeID") > 0) {
+                Url = url.split("?")[0] + "?";
+                url = url.split("?")[1];
+                for (i = 0; i < url.split("&").length; i++) {
+                    if (url.split("&")[i].split("=")[0] == "TitleTypeID") {
+                        Url = Url + url.split("&")[i].split("=")[0] + "=" + obj.value + "&";
+                    }
+                    else {
+                        Url = Url + url.split("&")[i] + "&";
+                    }
+                }
+                window.location.href = Url.substring(0, Url.length - 1);
+            }
+            else {
+                window.location.href = url + "&TitleTypeID=" + obj.value;
+            }
+        }
+        function ChangeLevelID(obj) {
+            if (obj.value == 0) { return false; }
+            var url = window.location.href;
+            var Url;
+            if (url.indexOf("LevelID") > 0) {
+                Url = url.split("?")[0] + "?";
+                url = url.split("?")[1];
+                for (i = 0; i < url.split("&").length; i++) {
+                    if (url.split("&")[i].split("=")[0] == "LevelID") {
+                        Url = Url + url.split("&")[i].split("=")[0] + "=" + obj.value + "&";
+                    }
+                    else {
+                        Url = Url + url.split("&")[i] + "&";
+                    }
+                }
+                window.location.href = Url.substring(0, Url.length - 1);
+            }
+            else {
+                window.location.href = url + "&LevelID=" + obj.value;
+            }
+        }
+        function ChangePsize(obj) {
+            if (obj.value == 0) { return false; }
+            var url = window.location.href;
+            var Url;
+            Url = url.split("?")[0] + "?";
+            url = url.split("?")[1];
+            for (i = 0; i < url.split("&").length; i++) {
+                if (url.split("&")[i].split("=")[0] == "Psize") {
+                    Url = Url + url.split("&")[i].split("=")[0] + "=" + obj.value + "&";
+                }
+                else {
+                    if (url.split("&")[i].split("=")[0] != "currPage") {
+                        Url = Url + url.split("&")[i] + "&";
+                    }
+                }
+            }
+            if (url.indexOf("Psize") < 0) {
+                Url = Url + "Psize=" + obj.value;
+                window.location.href = Url;
+            }
+            else {
+                window.location.href = Url.substring(0, Url.length - 1);
+            }
+        }
+        var PlayObj;
+        function mp3play(filename, obj) {
+            obj.childNodes[0].src = "images/waving.gif";
+            var url = "UploadFile/mp3/" + filename;
+            //判断上一个播放按钮是否存在，存在则变为静态
+            if (PlayObj) {
+                PlayObj.childNodes[0].src = "images/wave.png";
+            }
+            //记录当前的对象为下一个的上一个播放按钮
+            PlayObj = obj;
+            document.getElementById('Player').url = url;
+        }
+        function GetResult(MinNum) {
+            var KnowledgeID = "";
+            var MaxKnowledge = Knowledge.length;
+            for (i = 0; i < MaxKnowledge; i++) {
+                if (Knowledge[i].checked == true) {
+                    if (KnowledgeID == "") {
+                        KnowledgeID = Knowledge[i].value;
+                    }
+                    else {
+                        KnowledgeID = KnowledgeID + "," + Knowledge[i].value;
+                    }
+                }
+            }
+            if (KnowledgeID == "") { alert("请先选择考点再查找!"); return false; }
+            window.frames["eWebEditor2"].AttachSubmit();
+            window.frames["auto"].document.getElementById('KnowledgeID').value = KnowledgeID;
+            window.frames["auto"].document.getElementById('keyword').value = $("keyword").value;
+            window.frames["auto"].document.getElementById('SearchTitleType').value = $("SearchTitleType").value;
+            window.frames["auto"].document.getElementById('SearchType').value = "0";
+            if (MinNum != null) {
+                window.frames["auto"].document.getElementById('MinNum').value = MinNum;
+            }
+            window.frames["auto"].document.autoform.submit();
+        }
+        function ShowSearch() {
+            var MaxID = document.getElementsByTagName("select").length;
+            for (i = 0; i < MaxID; i++) {
+                if (document.getElementsByTagName("select")[i].name != "SearchTitleType") {
+                    document.getElementsByTagName("select")[i].disabled = true;
+                }
+            }
+            $("eWebEditor2").src = "../SYEditor/search.htm?id=keyword&style=search";
+            $("Over").style.display = "block";
+            $("SearchWindow").style.display = "block";
+            if (navigator.appVersion.indexOf("MSIE 6.0") >= 0) {
+                $("SearchWindow").childNodes[1].childNodes[1].style.height = $("Window").childNodes[1].childNodes[0].offsetHeight;
+            }
+            else {
+                $("SearchWindow").childNodes[1].childNodes[1].style.minHeight = $("Window").childNodes[1].childNodes[0].offsetHeight;
+            }
+        }
+        function HideSearch() {
+            var MaxID = document.getElementsByTagName("select").length;
+            for (i = 0; i < MaxID; i++) {
+                document.getElementsByTagName("select")[i].disabled = false;
+            }
+            $("Over").style.display = "none";
+            $("SearchWindow").style.display = "none";
+            //$("SelectWindow").style.display = "none";
+        }
+        function Copy(copytype, tid, kid) {
+            if (copytype == "Del") {
+                var xmlhttp = new ActiveXObject("Msxml2.xmlhttp");
+                xmlhttp.open("GET", "knowledge.asp?DoType=DelTitleInfor&TitleInforID=" + tid, false);
+                xmlhttp.send();
+                return;
+            }
+            var url = window.location.href;
+            if (url.indexOf("SaveKindID") > 0) {
+                window.location.href = "testContent.asp?edit=" + copytype + "&SaveKindID=" + url.split("SaveKindID=")[1].split("&")[0] + "&KnowledgeID=" + url.split("KnowledgeID=")[1].split("&")[0] + "&TitleInforID=" + tid;
+            }
+            else {
+                window.location.href = "testContent.asp?edit=" + copytype + "&KnowledgeID=" + kid + "&TitleInforID=" + tid;
+            }
+
+        }
+        var Obj1 = ''
+        document.onmouseup = MUp
+        document.onmousemove = MMove
+        function MDown(Object) {
+            Obj1 = Object.id
+            document.all(Obj1).setCapture()
+            pX = event.x - document.all(Obj1).offsetLeft;
+            pY = event.y - document.all(Obj1).offsetTop;
+        }
+        function MMove() {
+            if (Obj1 != '') {
+                document.all(Obj1).style.left = event.x - pX;
+                document.all(Obj1).style.top = event.y - pY;
+            }
+        }
+        function MUp() {
+            if (Obj1 != '') {
+                document.all(Obj1).releaseCapture();
+                Obj1 = '';
+            }
+        }
+
+        function SelectDisplay(obj) {
+            Stype = '';
+            if (obj.checked == true) { Stype = 'All'; }
+            else { Stype = 'None'; }
+            var MaxID = Knowledge.length;
+            if (Stype == 'All') {
+                $("KnowledgeAll").checked = true;
+                for (i = 0; i < MaxID; i++) {
+                    if (Knowledge[i].checked != true) {
+                        Knowledge[i].checked = true;
+                    }
+                }
+            }
+            else {
+                $("KnowledgeAll").checked = false;
+                for (i = 0; i < MaxID; i++) {
+                    if (Knowledge[i].checked == true) {
+                        Knowledge[i].checked = false;
+                    }
+                }
+            }
+            //$("SelectWindow").style.display = "none";
+        }
+    </SCRIPT>
+
+    <DIV id=Over class=Over></DIV>
+    <DIV id=Window class=Window>
+        <DIV class=Wtop>
+            <DIV class=Wtform>
+                <DIV class=Wtftitle>位置选择</DIV>
+                <IMG onclick=HideWindow() src="images/close.gif"> </DIV>
+        </DIV>
+        <DIV class=Wbottom>
+            <DIV id=List1 class=List1></DIV>
+        </DIV>
+    </DIV>
+    <DIV id=SearchWindow class=SearchWindow>
+        <DIV class=Wtop onmousedown=MDown(this.parentNode)>
+            <DIV class=Wtftitle>试题搜索</DIV>
+            <IMG onclick=HideSearch() src="images/close.gif"> </DIV>
+        <DIV class=Wlb>
+            <DIV class=Wleft>
+                <DIV class=Wltop>
+                    <INPUT id=KnowledgeAll onclick=SelectDisplay(this) CHECKED type=checkbox>&nbsp;搜索范围</DIV>
+                <UL>
+                    <LI>
+                        <INPUT id=Knowledge value=1 CHECKED type=checkbox>&nbsp;函数 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=2 CHECKED type=checkbox>&nbsp;极限 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=3 CHECKED type=checkbox>&nbsp;连续 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=5 CHECKED type=checkbox>&nbsp;导数与微分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=8 CHECKED type=checkbox>&nbsp;微分中值定理 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=11 CHECKED type=checkbox>&nbsp;导数的应用 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=13 CHECKED type=checkbox>&nbsp;不定积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=15 CHECKED type=checkbox>&nbsp;定积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=17 CHECKED type=checkbox>&nbsp;定积分的应用 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=521 CHECKED type=checkbox>&nbsp;向量代数 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=523 CHECKED type=checkbox>&nbsp;多元函数的概念、极限与连续 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=524 CHECKED type=checkbox>&nbsp;多元函数的微分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=525 CHECKED type=checkbox>&nbsp;多元函数偏导数应用 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=526 CHECKED type=checkbox>&nbsp;二重积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=527 CHECKED type=checkbox>&nbsp;三重积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=528 CHECKED type=checkbox>&nbsp;曲线积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=529 CHECKED type=checkbox>&nbsp;曲面积分 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=530 CHECKED type=checkbox>&nbsp;常数项级数 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=531 CHECKED type=checkbox>&nbsp;幂级数 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=532 CHECKED type=checkbox>&nbsp;傅里叶级数 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=533 CHECKED type=checkbox>&nbsp;微分方程 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=1708 CHECKED type=checkbox>&nbsp;题型分析综合练习 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=1806 CHECKED type=checkbox>&nbsp;考研数学真题 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=2205 CHECKED type=checkbox>&nbsp;课后习题 </LI>
+                    <LI>
+                        <INPUT id=Knowledge value=2579 CHECKED type=checkbox>&nbsp;ch11 </LI>
+                </UL>
+            </DIV>
+            <DIV class=Wbottom>
+                <DIV style="TEXT-ALIGN: center" class=search>
+                    <DIV class=tsinput>
+                        <TEXTAREA style="DISPLAY: none" id=keyword name=keyword></TEXTAREA>
+                        <IFRAME id=eWebEditor2 height=50 src="about:blank" frameBorder=0 width=600 scrolling=yes></IFRAME>
+                    </DIV>
+                    <DIV class=search>题型选择：
+                        <SELECT id=SearchTitleType name=SearchTitleType>
+                            <OPTION selected value=0>全部类型</OPTION>
+                            <OPTION value=1>单选题</OPTION>
+                        </SELECT>&nbsp;&nbsp;
+                        <IMG onclick=GetResult() src="images/new/sbutton.gif"> </DIV>
+                </DIV>
+                <DIV id=ss class=showsearch>
+                    <DIV class=sstop>搜索结果：</DIV>
+                    <IFRAME id=auto height=0 src="CWsearch.asp" frameBorder=0 width=0 scrolling=no></IFRAME>
+                    <DIV id=SearchShow></DIV>
+                </DIV>
+            </DIV>
+        </DIV>
+    </DIV>
+    <DIV class=layout>
+        <DIV class=logobgt>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" height=36>
+                <TBODY>
+                    <TR height=36>
+                        <TD style="PADDING-LEFT: 10px; COLOR: #ffffff; FONT-WEIGHT: bold" width="30%" align=left>济南大学&nbsp;试题库系统&nbsp;</TD>
+                        <TD width="40%" align=center>
+                            <DIV class=text1>
+                                <SPAN></SPAN>
+                            </DIV>
+                        </TD>
+                        <TD width="30%" align=right>
+                            <DIV class=regards>欢迎登录:方勉&nbsp; 2018年3月30日&nbsp;</DIV>
+                        </TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV class=postion>二重积分&nbsp;&gt;&nbsp;利用极坐标计算二重积分</DIV>
+        <DIV class=form>
+            <DIV class=fexam>
+                <DIV style="TEXT-ALIGN: right; PADDING-RIGHT: 10px; FONT-SIZE: 12px; FONT-WEIGHT: 100" class=fetitle>选择题型：
+                    <SELECT id=TitleTypeID onchange=ChangeTitleType(this) name=TitleTypeID>
+                        <OPTION selected value=1>单选题</OPTION>
+                    </SELECT>&nbsp; 选择难度：
+                    <SELECT id=LevelID onchange=ChangeLevelID(this) name=LevelID>
+                        <OPTION selected value=0>请选择难度</OPTION>
+                        <OPTION value=1>易</OPTION>
+                        <OPTION value=2>中下</OPTION>
+                        <OPTION value=3>中</OPTION>
+                        <OPTION value=4>中上</OPTION>
+                        <OPTION value=5>难</OPTION>
+                    </SELECT>&nbsp; 每页显示题数：
+                    <SELECT id=Psize onchange=ChangePsize(this) name=Psize>
+                        <OPTION selected value=10>10</OPTION>
+                        <OPTION value=20>20</OPTION>
+                        <OPTION value=30>30</OPTION>
+                    </SELECT> &nbsp;&nbsp;&nbsp; </DIV>
+                <DIV class=LLDRight onclick="window.location.href='testcontent.asp?edit=Add&amp;KnowledgeID=565&amp;TitleTypeID=1'">添加试题</DIV>
+                <DIV class=LLDRight onclick="GetSelect('Move')">移动试题</DIV>
+                <DIV class=LLDRight onclick="GetSelect('Copy')">复制试题</DIV>
+                <DIV class=LLDRight onclick="GetSelect('Del')">删除试题</DIV>
+                <DIV class=LLDRight onclick=ShowSearch()>试题搜索</DIV>
+                <DIV class=select>
+                    <INPUT id=SelectPage onclick="SelectTest('Page',this)" type=checkbox>本页试题&nbsp;
+                    <INPUT id=SelectAll onclick="SelectTest('All',this)" type=checkbox>本考点试题</DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <DIV>二重积分
+                                <IFRAME style="MARGIN: 2px; WIDTH: 61px; HEIGHT: 35px; VERTICAL-ALIGN: -18px" class=MathFrame
+                                    title=%5Ciint%5Climits_%7BD%7De%5E%7Bx%5E%7B2%7D%2By%5E%7B2%7D%7Dd%5Csigma%20 marginHeight=0
+                                    src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no size="7902.4740234375,4554.96005859375,2922"
+                                    %></IFRAME>
+                                <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=%28%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="682,2268,984" %></IFRAME>其中
+                                <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no size="1479,2268,984"></IFRAME>是由
+                                <IFRAME style="MARGIN: 2px; WIDTH: 61px; HEIGHT: 21px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                    title=x%5E%7B2%7D%2By%5E%7B2%7D%3D9%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                    marginWidth=0 scrolling=no size="7908.799999999999,2721.6,1360.8" x></IFRAME>所围成的闭区域
+                                <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                    class=MathFrame title=%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                    marginWidth=0 scrolling=no version="1.0" size="682,2268,984" %></IFRAME>的值为
+                                <SPAN>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                        title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="2164,2268,984" %></IFRAME>.</SPAN>
+                            </DIV>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 53px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pi(e^{9}-1) marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="6954.4,2721.6,1360.8" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 43px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pie^{7}-1 marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="5590.4,2721.6,1360.8" %></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 48px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pie^{5}+1) marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="6272.4,2721.6,1360.8" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 42px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pie^{3}+e marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="5475.4,2721.6,1360.8" %></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 342px; HEIGHT: 42px; VERTICAL-ALIGN: -17px" class=MathFrame
+                                            title=\iint\limits_{D}e^{x^{2}%2By^{2}}d\sigma%3D\int_{0}^{2\pi}d\theta\int_{0}^{3}e^{r^{2}}rdr%3D\frac{1}{2}\cdot2\pi\cdote^{r^{2}}%7C_{0}^{3}%3D\pi%28e^{9}-1%29
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            %></IFRAME>.</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33403 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33403&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>易 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV style="BACKGROUND: none transparent scroll repeat 0% 0%" class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <P>
+                                <IFRAME style="MARGIN: 2px; WIDTH: 103px; HEIGHT: 38px; VERTICAL-ALIGN: -21px" class=MathFrame
+                                    title=%5Ciint%5Climits_%7Bx%5E%7B2%7D+y%5E%7B2%7D%5Cle1%7D%5Croot%7B5%7D%7Bx%5E%7B2%7D+y%5E%7B2%7D%7Dd%5Csigma%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="13372.7900390625,4972.8,3297"></IFRAME>的值是
+                                <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                    class=MathFrame title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0
+                                    allowTransparency marginWidth=0 scrolling=no version="1.0" size="2164,2268,984"></IFRAME>．</P>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 20px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{5}{6}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="2648,5086,2543"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 20px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{5}{3}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="2648,5086,2543"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 28px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{10}{7}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="3672,5086,2543"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 28px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{10}{11}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="3672,5086,2543"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>令
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 66px; HEIGHT: 21px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                            title=x=r\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank" frameBorder=0
+                                            allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 62px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                            class=MathFrame title=y=r\rm{s}\rm{i}\rm{n}\theta marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，则有</P>
+                                    <P>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 75px; HEIGHT: 22px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                            title=0\le\theta\le2\pi marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0"></IFRAME>，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 56px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                            class=MathFrame title=0\ler\le1 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0"></IFRAME>，所以有</P>
+                                    <P>原式
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 158px; HEIGHT: 48px; VERTICAL-ALIGN: -16px" class=MathFrame
+                                            title==\int_{0}^{2\pi}d\theta\int_{0}^{1}r^{\frac{2}{5}}rdr=\frac{5}{6}\pi marginHeight=0
+                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>．</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33413 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33413&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>易 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV style="BACKGROUND: none transparent scroll repeat 0% 0%" class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <DIV>
+                                <IFRAME style="MARGIN: 2px; WIDTH: 103px; HEIGHT: 37px; VERTICAL-ALIGN: -21px" class=MathFrame
+                                    title=%5Ciint%5Climits_%7Bx%5E%7B2%7D+y%5E%7B2%7D%5Clea%5E%7B2%7D%7Ddxdy%3D%28%5Ckern%7B16px%7D%29%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="13362,4858,3297"></IFRAME>．</DIV>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 21px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pia^{2} marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2762.4,2721.6,1360.8"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 12px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=a^{2} marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1638.4,2721.6,1360.8"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=0 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=1 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>令
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 66px; HEIGHT: 21px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                            title=x=r\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank" frameBorder=0
+                                            allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 62px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                            class=MathFrame title=y=r\rm{s}\rm{i}\rm{n}\theta marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，则</P>
+                                    <P>原式
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 137px; HEIGHT: 32px; VERTICAL-ALIGN: -10px" class=MathFrame
+                                            title==\int_{0}^{2\pi}d\theta\int_{0}^{a}rdr=\pia^{2} marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>．</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33416 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33416&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>易 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <P>设积分区域
+                                <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="1479,2268,984"></IFRAME>的面积为
+                                <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                    class=MathFrame title=S%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                    marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>，
+                                <IFRAME style="MARGIN: 2px; WIDTH: 32px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=%28r%2C%5Ckern%7B8px%7De%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                    marginWidth=0 scrolling=no version="1.0" size="4217,2268,984"></IFRAME>为
+                                <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="1479,2268,984"></IFRAME>中点的极坐标，则
+                                <IFRAME style="MARGIN: 2px; WIDTH: 82px; HEIGHT: 34px; VERTICAL-ALIGN: -18px"
+                                    class=MathFrame title=%5Ciint%5Climits_%7BD%7Dr%5Crm%7Bd%7Dr%5Crm%7Bd%7D%5Ctheta%3D%28%5Ckern%7B16px%7D%29%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="10711,4483,2922"></IFRAME>．</P>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=S marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=2S marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2048,2268,984"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=3S marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2048,2268,984"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=0 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 71px; HEIGHT: 35px; VERTICAL-ALIGN: -17px" class=MathFrame
+                                        title=\iint\limits_{D}rdrd\theta=m arginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0"></IFRAME>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 78px; HEIGHT: 35px; VERTICAL-ALIGN: -17px"
+                                        class=MathFrame title=\iint\limits_{D}dxdy=S marginHeight=0 src="about:blank" frameBorder=0
+                                        allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>.</DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33417 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33417&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>易 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <P>根据二重积分的几何意义
+                                <IFRAME style="MARGIN: 2px; WIDTH: 148px; HEIGHT: 35px; VERTICAL-ALIGN: -18px" class=MathFrame
+                                    title=%5Ciint%5Climits_%7BD%7D%5Csqrt%7B1-x%5E%7B2%7D-y%5E%7B2%7D%7Ddxdy%3D%28%5Ckern%7B16px%7D%29%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="19165.7900390625,4597.8,2922"></IFRAME>．其中
+                                <IFRAME style="MARGIN: 2px; WIDTH: 83px; HEIGHT: 22px; VERTICAL-ALIGN: -6px"
+                                    class=MathFrame title=D%3A%5Ckern%7B16px%7Dx%5E%7B2%7D+y%5E%7B2%7D%5Cle1%20 marginHeight=0
+                                    src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                    size="10756.8,2893.3,1360.8"></IFRAME>．</P>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 20px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{2}{3}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="2648,5086,2543"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 20px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{1}{3}\pi marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="2648,5086,2543"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 8px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\pi marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1124,2268,984"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=0 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>令
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 66px; HEIGHT: 21px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                            title=x=r\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank" frameBorder=0
+                                            allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 62px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                            class=MathFrame title=y=r\rm{s}\rm{i}\rm{n}\theta marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>，在
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 19px; VERTICAL-ALIGN: -5px"
+                                            class=MathFrame title=D marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0"></IFRAME>中</P>
+                                    <P>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 75px; HEIGHT: 22px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                            title=0\le\theta\le2\pi marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0"></IFRAME>，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 56px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                            class=MathFrame title=0\ler\le1 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0"></IFRAME>，</P>
+                                    <P>原式
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 193px; HEIGHT: 39px; VERTICAL-ALIGN: -16px" class=MathFrame
+                                            title==\int_{0}^{2\pi}d\theta\int_{0}^{1}\sqrt{1-r^{2}}\cdotrdr=\frac{2}{3}\pi marginHeight=0
+                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"></IFRAME>．</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33418 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33418&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <P>设
+                                <IFRAME style="MARGIN: 2px; WIDTH: 83px; HEIGHT: 22px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                    title=D%3A%5Ckern%7B16px%7Dx%5E%7B2%7D+y%5E%7B2%7D%5Cle2%20 marginHeight=0 src="about:blank"
+                                    frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0" size="10756.8,2893.3,1360.8"></IFRAME>，则
+                                <IFRAME style="MARGIN: 2px; WIDTH: 75px; HEIGHT: 35px; VERTICAL-ALIGN: -18px"
+                                    class=MathFrame title=%5Ciint%5Climits_%7BD%7De%5E%7Bx%5E%7B2%7D+y%5E%7B2%7D%7Ddxdy%20 marginHeight=0
+                                    src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                    size="9734.4740234375,4554.96005859375,2922"></IFRAME>的值是
+                                <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                    class=MathFrame title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0
+                                    allowTransparency marginWidth=0 scrolling=no version="1.0" size="2164,2268,984"></IFRAME>．</P>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 53px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\rm{\pi}(e^{2}-1) marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="6954.4,2721.6,1360.8"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 61px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=2\rm{\pi}(e^{2}+1) marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="7978.4,2721.6,1360.8"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 61px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=3\rm{\pi}(e-1)^{2} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="7978.4,2721.6,1360.8"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 65px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{1}{2}\rm{\pi}(e+1)^{2} marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="1.0" size="8478.4,5086,2543"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>利用极坐标进行计算</P>
+                                    <P>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 173px; HEIGHT: 40px; VERTICAL-ALIGN: -18px" class=MathFrame
+                                            title=\iint\limits_{D}e^{x^{2}+y^{2}}dxdy=\int_{0}^{2\pi}d\theta\int_{0}^{\sqrt{2}}e^{r^{2}}rdr
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            version="1.0" size="22437.31403808594,5262.9,2922"></IFRAME>
+                                    </P>
+                                    <P>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 67px; HEIGHT: 19px; VERTICAL-ALIGN: -5px" class=MathFrame
+                                            title=%5Ckern%7B4px%7D%5C%2C%5C%2C%3D%5Cpi%28e%5E%7B2%7D-1%29 marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="2.0" size="9525.4,2721.6,1360.8"
+                                            mathcolor="#000000"></IFRAME>．</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33429 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33429&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <DIV>
+                                <P>二重积分
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 79px; HEIGHT: 34px; VERTICAL-ALIGN: -18px" class=MathFrame
+                                        title=%5Ciint%5Climits_%7BD%7D%28x%5E%7B2%7D%2By%5E%7B2%7D%29d%5Csigma%20 marginHeight=0
+                                        src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no size="10343.8,4483,2922"
+                                        %></IFRAME>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=%28%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="682,2268,984" %></IFRAME>其中
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no size="1479,2268,984"></IFRAME>是由
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 76px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                        class=MathFrame title=x%5E%7B2%7D%2By%5E%7B2%7D%3D2ax%20 marginHeight=0 src="about:blank"
+                                        frameBorder=0 allowTransparency marginWidth=0 scrolling=no size="9841.8,2721.6,1360.8"
+                                        x></IFRAME>与
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=x%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no size="909,2268,984" x></IFRAME>轴所围成的上半部分的闭区域
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="682,2268,984" %></IFRAME>的值为
+                                    <SPAN>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                            title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0" size="2164,2268,984" %></IFRAME>.</SPAN>
+                                </P>
+                            </DIV>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 33px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{3}{4}\pia^{4} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="4286.4,5086,2543" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 21px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=\pia^{4} marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2762.4,2721.6,1360.8"
+                                                            %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 33px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{3}{2}\pia^{4} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="4286.4,5086,2543" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 29px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                                            class=MathFrame title=2\pia^{2} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="3786.4,2721.6,1360.8" 2></IFRAME>
+                                                        <A href="http://192.168.1.199/blog/Web/Index.aspx?userid=6040"></A>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P>&nbsp; &nbsp;如图，积分区域
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 217px; HEIGHT: 25px; VERTICAL-ALIGN: -5px"
+                                            class=MathFrame title=D%3A\kern{8px}0\lex\le2a%2C\kern{8px}0\ley\le\sqrt{2ax-x^{2}}
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no></IFRAME>.</P>
+                                    <P align=center>
+                                        <IFRAME style="WIDTH: 192px; HEIGHT: 126px; VERTICAL-ALIGN: middle" id=vml76634 class=vmlFrame
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            version="1.2" data="A[%3Cv%3AStroke%20joinstyle%20%3D%20%22miter%22%3E%3C/v%3AStroke%3E%3Cv%3Apath%20arrowok%20%3D%20%22t%22%3E%3C/v%3Apath%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,CArc55454,St{+ 300+ 119+ absolute+ 189+ 121+ + y},true,90,270,t,#ff9,black,1.2pt,$d$d5400]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,CPoly43254,St{+ 300+ 0+ absolute+ 153+ 115+ + },true,line,1,0$d115,f,white,black, m0$d115 l0$d0 e]Sh[,CPoly68982,St{+ 300+ 91+ absolute+ 198+ 52+ + },true,line,1,91$d52,f,white,black, m0$d52 l91$d0 e]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,CPoly10401,St{+ 279+ 180+ absolute+ 250+ 0+ + },true,line,1,180$d0,f,white,black, m0$d0 l180$d0 e]Sh[%3Cv%3AStroke%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,CBeizer69272,St{+ 323+ 8+ absolute+ 237+ 13+ 0+ },true,,1,8$d13,f,white,black, m0$d0 c8$d3$d6$d13$d6$d13 e]R[%3Cv%3AStroke%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,,St{+ 358+ 4+ absolute+ 248+ 4+ + },true,,3,t,red,t,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ey%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 284+ 18+ absolute+ 147+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3EO%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 281+ 23+ absolute+ 250+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ex%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 446+ 19+ absolute+ 250+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ea%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 351+ 19+ absolute+ 249+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E2%3CEM%3Ea%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 406+ 27+ absolute+ 250+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3ED%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 380+ 23+ absolute+ 217+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Er%3C/EM%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 336+ 17+ absolute+ 208+ 21+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CFONT%20face%3DSymbol%3E%3CSTRONG%3E%3CEM%3Eq%3C/EM%3E%3C/STRONG%3E%3C/FONT%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 329+ 20+ absolute+ 230+ 22+ + },,,0,f,black,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Er%3C/EM%3E%20%3CFONT%20face%3DSymbol%3E%3D%3C/FONT%3E%202%3CEM%3Ea%3C/EM%3Ecos%3CFONT%20face%3DSymbol%3E%3CEM%3Eq%3C/EM%3E%3C/FONT%3E%3C/STRONG%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,Text,St{+ 356+ 82+ absolute+ 166+ 22+ + },,black,0,f,black,f,#ffacd6]L0[O]Sh0[O,id,style,drag,Typeclass,PointN,coordsize,filled,fillcolor,strokecolor,path]O0[O]R0[O,class,style,drag,bakStrokecolor,o:spt,filled,fillcolor,stroked,strokecolor]Rr0[O]P0[O]A0[O,id,style,drag,startangle,endangle,filled,fillcolor,strokecolor,strokeweight,adj]St0[O,LEFT,WIDTH,POSITION,TOP,HEIGHT,rotation,flip]D0[O]"
+                                            Features="false,false,false,1,190,124,30,30,28,101,-272,-149"></IFRAME>
+                                    </P>
+                                    <P>上半圆
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 92px; HEIGHT: 25px; VERTICAL-ALIGN: -5px" class=MathFrame
+                                            title=y%3D\sqrt{2ax-x^{2}} marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no y></IFRAME>&nbsp;的极坐标方程为：
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 74px; HEIGHT: 21px; VERTICAL-ALIGN: -4px"
+                                            class=MathFrame title=r%3D2a\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank"
+                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no r></IFRAME>，</P>
+                                    <P align=center>原式
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 412px; HEIGHT: 48px; VERTICAL-ALIGN: -14px" class=MathFrame
+                                            title=%3D\int_{0}^{\frac{\emph{\pi}}{2}}d\emph{\theta}\int_{0}^{2a\rm{c}\rm{o}\rm{s}\emph{\theta}}r_{}^{3}dr%3D4a_{}^{4}\int_{0}^{\frac{\emph{\pi}}{2}}\rm{c}\rm{o}\rm{s}_{}^{4}\emph{\theta}d\emph{\theta}%3D4a^{4}\cdot\frac{3}{4}\cdot\frac{1}{2}\cdot\frac{\pi}{2}%3D\frac{3}{4}\pia^{4}
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            %></IFRAME>.&nbsp;</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33404 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33404&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV style="BACKGROUND: none transparent scroll repeat 0% 0%" class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <DIV>
+                                <P>二重积分
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 115px; HEIGHT: 34px; VERTICAL-ALIGN: -18px" class=MathFrame
+                                        title=%5Ciint%5Climits_%7BD%7D%5Crm%7Bl%7D%5Crm%7Bn%7D%281%2Bx%5E%7B2%7D%2By%5E%7B2%7D%29d%5Csigma%20
+                                        marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                        size="14879.8,4483,2922" %></IFRAME>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=%28%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="682,2268,984" %></IFRAME>其中
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no size="1479,2268,984"></IFRAME>是由圆周
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 61px; HEIGHT: 21px; VERTICAL-ALIGN: -6px"
+                                        class=MathFrame title=x%5E%7B2%7D%2By%5E%7B2%7D%3D4%20 marginHeight=0 src="about:blank"
+                                        frameBorder=0 allowTransparency marginWidth=0 scrolling=no size="7908.799999999999,2721.6,1360.8"
+                                        x></IFRAME>及坐标轴所围成的在第一象限内的闭区域
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="682,2268,984" %></IFRAME>的值为
+                                    <SPAN>
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                            title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no version="1.0" size="2164,2268,984" %></IFRAME>.</SPAN>
+                                </P>
+                            </DIV>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 73px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{\pi}{2}(3\rm{l}\rm{n}5-2) marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="1.0" size="9572,5086,2543" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 73px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{\pi}{4}(5\rm{l}\rm{n}5-4) marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="1.0" size="9572,5086,2543" %></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 51px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\pi\rm{l}\rm{n}3-2 marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="6684,2268,984" %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 55px; HEIGHT: 39px; VERTICAL-ALIGN: -15px"
+                                                            class=MathFrame title=\frac{\pi}{4}\rm{l}\rm{n}5-3 marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="1.0" size="7184,5086,2543" %></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>B</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>原式
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 335px; HEIGHT: 48px; VERTICAL-ALIGN: -14px" class=MathFrame
+                                        title=%3D\int_{0}^{\frac{\pi}{2}}d\theta\int_{0}^{2}\rm{l}\rm{n}%281%2Br^{2}%29rdr%3D\frac{1}{2}\cdot\frac{\pi}{2}\int_{0}^{2}\rm{l}\rm{n}%281%2Br^{2}%29d%281%2Br^{2}%29
+                                        marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                        %></IFRAME>
+                                    <P>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 336px; HEIGHT: 40px; VERTICAL-ALIGN: -14px"
+                                            class=MathFrame title=%3D\frac{\pi}{4}\%7B%5B%281%2Br^{2}%29\rm{l}\rm{n}%281%2Br^{2}%29%5D%7C_{0}^{2}-\int_{0}^{2}2rdr\%7D%3D\frac{\pi}{4}%285\rm{l}\rm{n}5-4%29
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            %></IFRAME>.</P>
+                                    <P align=center>
+                                        <IFRAME style="WIDTH: 176px; HEIGHT: 162px; VERTICAL-ALIGN: middle" id=vml41461 class=vmlFrame
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            version="1.2" data="Sh[,CBeizer78940,St{+ 300+ 90+ absolute+ 160+ 90+ 0},true,true,3,,,90$d90,t,#cfc,black,1.2pt, m0$d0 c44$d0$d90$d45$d90$d90$d90$d90$d0$d90$d0$d90$d0$d90$d0$d0$d0$d0 e]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E,CPoly90713,St{+ 277+ 165+ absolute+ 250+ 0+ },true,,1,,line,165$d0,f,white,black,0, m0$d0 l165$d0 e]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E,CPoly3140,St{+ 300+ 0+ absolute+ 121+ 148+ },true,,1,black,line,0$d148,f,white,black,0, m0$d148 l0$d0 e]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ey%3C/EM%3E%3C/STRONG%3E,Text,St{+ 284+ 18+ absolute+ 114+ 21+ },,f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3EO%3C/EM%3E%3C/STRONG%3E,Text,St{+ 280+ 23+ absolute+ 251+ 21+ },black,f,f,#ffacd6]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3ED%3C/EM%3E%3C/STRONG%3E,Text,St{+ 327+ 23+ absolute+ 203+ 21+ },,f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ex%3C/EM%3E%3C/STRONG%3E,Text,St{+ 429+ 19+ absolute+ 251+ 21+ },,f,f,black]R[%26nbsp%3B%3CSTRONG%3E2%3C/STRONG%3E,Text,St{+ 284+ 15+ absolute+ 151+ 21+ },,f,f,black]L0[O]Sh0[O,id,style,drag,closed,PointN,bakStrokecolor,Typeclass,coordsize,filled,fillcolor,strokecolor,strokeweight,path]O0[O]R0[O,class,style,bakStrokecolor,filled,stroked,strokecolor]Rr0[O]P0[O]A0[O]St0[O,LEFT,WIDTH,POSITION,TOP,HEIGHT,rotation]D0[O]"
+                                            Features="false,false,false,1,174,160,30,30,28,136,-272,-114"></IFRAME>&nbsp;</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33405 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33405&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV style="BACKGROUND: none transparent scroll repeat 0% 0%" class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <P>设域
+                                <IFRAME style="MARGIN: 2px; WIDTH: 81px; HEIGHT: 22px; VERTICAL-ALIGN: -6px" class=MathFrame
+                                    title=D%5Ckern%7B4px%7D%3A%5Ckern%7B4px%7Dx%5E%7B2%7D+y%5E%7B2%7D%5Cle1%5Ckern%7B4px%7D%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="10556.8,2893.3,1360.8"></IFRAME>，
+                                <IFRAME style="MARGIN: 2px; WIDTH: 10px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=f%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="1322,2268,984"></IFRAME>是域
+                                <IFRAME style="MARGIN: 2px; WIDTH: 11px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=D%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="1479,2268,984"></IFRAME>上的连续函数 ，则
+                                <IFRAME style="MARGIN: 2px; WIDTH: 146px; HEIGHT: 35px; VERTICAL-ALIGN: -18px"
+                                    class=MathFrame title=%5Ciint%5Climits_%7BD%7Df%28%5Csqrt%7Bx%5E%7B2%7D+y%5E%7B2%7D%7D%29dxdy%3D%28%5Ckern%7B16px%7D%29%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    version="1.0" size="18908.7900390625,4597.8,2922"></IFRAME>．</P>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 75px; HEIGHT: 31px; VERTICAL-ALIGN: -11px"
+                                                            class=MathFrame title=2\pi\int_{0}^{1}rf(r)dr marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="9703.4,4123.8,1971.9"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 75px; HEIGHT: 31px; VERTICAL-ALIGN: -11px"
+                                                            class=MathFrame title=4\pi\int_{0}^{1}rf(r)dr marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="9703.4,4123.8,1971.9"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                                <TR>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 69px; HEIGHT: 32px; VERTICAL-ALIGN: -10px"
+                                                            class=MathFrame title=2%5Cpi%5Cint_%7B0%7D%5E%7B1%7Df%28r%29dr marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="2.0" size="8906.4,4123.8,1971.9" mathcolor="#000000"></IFRAME>
+                                                    </TD>
+                                                    <TD class=option2>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 69px; HEIGHT: 32px; VERTICAL-ALIGN: -10px"
+                                                            class=MathFrame title=4%5Cpi%5Cint_%7B0%7D%5E%7B1%7Df%28r%29dr marginHeight=0
+                                                            src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                                            version="2.0" size="8906.4,4123.8,1971.9" mathcolor="#000000"></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>A</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <P>令
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 56px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                        title=x=r\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="7361,2268,984"></IFRAME>，
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 56px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                        class=MathFrame title=y=r\rm{c}\rm{o}\rm{s}\theta marginHeight=0 src="about:blank" frameBorder=0
+                                        allowTransparency marginWidth=0 scrolling=no version="1.0" size="7361,2268,984"></IFRAME>，则 原式
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 105px; HEIGHT: 31px; VERTICAL-ALIGN: -11px"
+                                        class=MathFrame title==\int_{0}^{2\pi}d\theta\int_{0}^{1}rf(r)dr marginHeight=0 src="about:blank"
+                                        frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0" size="13633.2,4123.8,1971.9"></IFRAME>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 89px; HEIGHT: 31px; VERTICAL-ALIGN: -11px"
+                                        class=MathFrame title==2\pi\int_{0}^{1}rf(r)dr marginHeight=0 src="about:blank" frameBorder=0
+                                        allowTransparency marginWidth=0 scrolling=no version="1.0" size="11622.4,4123.8,1971.9"></IFRAME>．</P>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=4471 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=4471&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV class=felist onmouseover=ChangeColor(this) onmouseout=BackColor(this)>
+                    <DIV class=felleft>
+                        <DIV class=question>
+                            <DIV>二重积分
+                                <IFRAME style="MARGIN: 2px; WIDTH: 135px; HEIGHT: 51px; VERTICAL-ALIGN: -21px" class=MathFrame
+                                    title=%5Ciint%5Climits_%7BD%7D%5Cfrac%7B%5Crm%7Bs%7D%5Crm%7Bi%7D%5Crm%7Bn%7D%28%5Cpi%5Csqrt%7Bx%5E%7B2%7D%2By%5E%7B2%7D%7D%29%7D%7B%5Csqrt%7Bx%5E%7B2%7D%2By%5E%7B2%7D%7D%7Ddxdy%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    size="17517.7900390625,6623.2001953125,3311.60009765625" %></IFRAME>
+                                <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=%28%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="682,2268,984" %></IFRAME>其中积分区域为
+                                <IFRAME style="MARGIN: 2px; WIDTH: 161px; HEIGHT: 22px; VERTICAL-ALIGN: -6px"
+                                    class=MathFrame title=D%3D%5C%7B%28x%2C%5Ckern%7B8px%7Dy%29%7C1%5Clex%5E%7B2%7D%2By%5E%7B2%7D%5Cle4%5C%7D%20
+                                    marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                    size="20954.800000000003,2893.3,1360.8"></IFRAME>
+                                <IFRAME style="MARGIN: 2px; WIDTH: 5px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                    title=%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0
+                                    scrolling=no version="1.0" size="682,2268,984" %></IFRAME>的值是
+                                <SPAN>
+                                    <IFRAME style="MARGIN: 2px; WIDTH: 16px; HEIGHT: 17px; VERTICAL-ALIGN: -3px" class=MathFrame
+                                        title=%28%5Ckern%7B16px%7D%29%20 marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                        marginWidth=0 scrolling=no version="1.0" size="2164,2268,984" %></IFRAME>.</SPAN>
+                            </DIV>
+                        </DIV>
+                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                            <TBODY>
+                                <TR>
+                                    <TD>
+                                        <TABLE border=0 cellSpacing=0 cellPadding=0 width=700>
+                                            <TBODY>
+                                                <TR>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{A}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 22px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=-5 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2943,2268,984"
+                                                            %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 14px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{B}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1878,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 22px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=-4 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="2943,2268,984"
+                                                            %></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{C}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=5 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"
+                                                            5></IFRAME>
+                                                    </TD>
+                                                    <TD class=option4>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 15px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=\bf{\rm{D}}\bf{.} marginHeight=0 src="about:blank"
+                                                            frameBorder=0 allowTransparency marginWidth=0 scrolling=no version="1.0"
+                                                            size="1991,2268,984"></IFRAME>
+                                                        <IFRAME style="MARGIN: 2px; WIDTH: 7px; HEIGHT: 17px; VERTICAL-ALIGN: -3px"
+                                                            class=MathFrame title=4 marginHeight=0 src="about:blank" frameBorder=0
+                                                            allowTransparency marginWidth=0 scrolling=no version="1.0" size="1024,2268,984"
+                                                            4></IFRAME>
+                                                    </TD>
+                                                </TR>
+                                            </TBODY>
+                                        </TABLE>
+                                    </TD>
+                                </TR>
+                            </TBODY>
+                        </TABLE>
+                        <DIV class=answerbutton>
+                            <IMG style="CURSOR: pointer" onclick=SHAnswer(this) src="images/gopen.jpg">
+                        </DIV>
+                        <DIV class=answer>
+                            <DIV style="BORDER-BOTTOM: #91b8da 1px solid; HEIGHT: 29px" class=atop>
+                                <TABLE cellSpacing=0 cellPadding=0 width=698 height=29>
+                                    <TBODY>
+                                        <TR height=29>
+                                            <TD style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" vAlign=middle
+                                                width="10%">
+                                                <B>参考答案</B>
+                                            </TD>
+                                            <TD vAlign=middle width="5%">
+                                                <B>B</B>
+                                            </TD>
+                                            <TD vAlign=middle width="10%">
+                                                <B>对应考点</B>
+                                            </TD>
+                                            <TD style="TEXT-ALIGN: left; PADDING-LEFT: 10px; COLOR: #0000ff" vAlign=middle width="75%">利用极坐标计算二重积分</TD>
+                                        </TR>
+                                    </TBODY>
+                                </TABLE>
+                            </DIV>
+                            <DIV class=aform>
+                                <DIV>
+                                    <P align=center>
+                                        <IFRAME style="WIDTH: 250px; HEIGHT: 242px; VERTICAL-ALIGN: middle" id=vml63398 class=vmlFrame
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            version="1.2" data="O[%3Cv%3AStroke%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,St{+ 220+ 160+ absolute+ 170+ 160+ },false,t,#ff9,black,1.2pt]O[,St{+ 260+ 80+ absolute+ 210+ 80+ },false,t,white,black,1.2pt]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E,CPoly43138,St{+ 181+ 249+ absolute+ 250+ 0+ 0},true,1,line,249$d0,f,white,black, m0$d0 l249$d0 e,,]Sh[%3Cv%3AStroke%20endarrow%20%3D%20%22classic%22%3E%3C/v%3AStroke%3E,CPoly4677,St{+ 300+ 0+ absolute+ 124+ 234+ 0},true,1,line,0$d234,f,white,black, m0$d234 l0$d0 e,,]Sh[%3Cv%3AStroke%3E%3C/v%3AStroke%3E%3Cv%3Afill%3E%3C/v%3Afill%3E,CBeizer99872,St{+ 300+ 80+ absolute+ 170+ 80+ 0},true,4,,80$d80,t,red,black, m0$d0 c44$d0$d80$d35$d80$d80$d80$d80$d40$d80$d40$d80$d40$d61$d25$d40$d0$d40$d0$d40$d0$d0$d0$d0 e,true,1.2pt]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3EO%3C/EM%3E%3C/STRONG%3E,Text,St{+ 280+ 23+ absolute+ 251+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ex%3C/EM%3E%3C/STRONG%3E,Text,St{+ 418+ 19+ absolute+ 250+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3Ey%3C/EM%3E%3C/STRONG%3E,Text,St{+ 283+ 18+ absolute+ 117+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3ED%3C/EM%3E%3C/STRONG%3E,Text,St{+ 248+ 23+ absolute+ 201+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E1%3C/STRONG%3E,Text,St{+ 338+ 15+ absolute+ 252+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E2%3C/STRONG%3E,Text,St{+ 379+ 15+ absolute+ 250+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CFONT%20face%3DSymbol%3E-%3C/FONT%3E1%3C/STRONG%3E,Text,St{+ 237+ 25+ absolute+ 248+ 22+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CEM%3ED%3C/EM%3E%3C/STRONG%3E,Text,St{+ 331+ 23+ absolute+ 199+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CFONT%20size%3D1%3E1%3C/FONT%3E%3C/STRONG%3E,Text,St{+ 343+ 12+ absolute+ 204+ 21+ },f,f,black]R[%26nbsp%3B%3CSTRONG%3E%3CFONT%20face%3DSymbol%3E-%3C/FONT%3E2%3C/STRONG%3E,Text,St{+ 196+ 25+ absolute+ 249+ 22+ },f,f,black]L0[O]Sh0[O,id,style,drag,PointN,Typeclass,coordsize,filled,fillcolor,strokecolor,path,closed,strokeweight]O0[O,style,drag,filled,fillcolor,strokecolor,strokeweight]R0[O,class,style,filled,stroked,strokecolor]Rr0[O]P0[O]A0[O]St0[O,LEFT,WIDTH,POSITION,TOP,HEIGHT,rotation]D0[O]"
+                                            Features="false,false,false,1,248,240,40,40,116,130,-184,-120"></IFRAME>
+                                    </P>
+                                    <P>由对称性，可只考虑第一象限部分，
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 53px; HEIGHT: 23px; VERTICAL-ALIGN: -7px"
+                                            class=MathFrame title=D%3D4D_{1} marginHeight=0 src="about:blank" frameBorder=0 allowTransparency
+                                            marginWidth=0 scrolling=no></IFRAME>，注意到被积函数也有对称性，则有</P>
+                                    <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                                        <IFRAME style="MARGIN: 2px; WIDTH: 329px; HEIGHT: 51px; VERTICAL-ALIGN: -20px"
+                                            class=MathFrame title=\iint\limits_{D}\frac{\rm{s}\rm{i}\rm{n}%28\emph{\pi}\sqrt{x^{2}%2By^{2}}%29}{\sqrt{x^{2}%2By^{2}}}dxdy%3D4\iint\limits_{D_{1}}\frac{\rm{s}\rm{i}\rm{n}%28\pi\sqrt{x^{2}%2By^{2}}%29}{\sqrt{x^{2}%2By^{2}}}dxdy
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            %></IFRAME>
+                                    </P>
+                                    <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <IFRAME
+                                            style="MARGIN: 2px; WIDTH: 187px; HEIGHT: 48px; VERTICAL-ALIGN: -14px" class=MathFrame
+                                            title=%3D4\int_{0}^{\frac{\pi}{2}}d\theta\int_{1}^{2}\frac{\rm{s}\rm{i}\rm{n}\pir}{r}rdr%3D-4
+                                            marginHeight=0 src="about:blank" frameBorder=0 allowTransparency marginWidth=0 scrolling=no
+                                            %></IFRAME>.&nbsp;</P>
+                                </DIV>
+                            </DIV>
+                        </DIV>
+                    </DIV>
+                    <DIV class=felright>
+                        <UL>
+                            <LI>
+                                <DIV style="WIDTH: 20px; FLOAT: left">
+                                    <INPUT id=ID name=ID value=33390 type=checkbox>
+                                </DIV>
+                                <DIV style="FLOAT: left; MARGIN-LEFT: 30px" class=LLDRight onclick="window.open('testcontent.asp?edit=Edit&amp;KnowledgeID=565&amp;TitleInforID=33390&amp;currPage=1')">修改试题</DIV>
+                            </LI>
+                            <LI>
+                                <SPAN>属性:</SPAN>共享&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SPAN>难度:</SPAN>中下 </LI>
+                            <LI>
+                                <SPAN>采用:</SPAN>是 </LI>
+                            <LI title="">
+                                <SPAN>标识:</SPAN>
+                            </LI>
+                        </UL>
+                    </DIV>
+                </DIV>
+                <DIV style="MARGIN-TOP: 5px" class=LLDRight onclick="window.open('testcontent.asp?edit=Add&amp;KnowledgeID=565')">添加试题</DIV>
+                <DIV style="MARGIN-TOP: 5px" class=LLDRight onclick="GetSelect('Move')">移动试题</DIV>
+                <DIV style="MARGIN-TOP: 5px" class=LLDRight onclick="GetSelect('Copy')">复制试题</DIV>
+                <DIV style="MARGIN-TOP: 5px" class=LLDRight onclick="GetSelect('Del')">删除试题</DIV>
+                <DIV style="MARGIN-TOP: 5px" class=select>
+                    <INPUT id=SelectPage onclick="SelectTest('Page',this)" type=checkbox>本页试题&nbsp;
+                    <INPUT id=SelectAll onclick="SelectTest('All',this)" type=checkbox>本考点试题</DIV>
+                <DIV class=page align=center>[ 首&nbsp;页 ]&nbsp; [ 上一页 ]&nbsp; [
+                    <A href="?KnowledgeID=565&amp;OpenType=&amp;SaveKindID=&amp;ModelID=&amp;ButtonType=stzj&amp;TitleTypeID=1&amp;LevelID=&amp;Psize=&amp;currPage=2">下一页</A> ]&nbsp; [
+                    <A href="?KnowledgeID=565&amp;OpenType=&amp;SaveKindID=&amp;ModelID=&amp;ButtonType=stzj&amp;TitleTypeID=1&amp;LevelID=&amp;Psize=&amp;currPage=2">末&nbsp;页</A> ] &nbsp;&nbsp;&nbsp;&nbsp;页数:
+                    <SELECT onchange="javascript:if(this.value!='')location.href=(this.value)"
+                        class=input name=select>
+                        <OPTION selected value="">1页</OPTION>
+                        <OPTION value=?KnowledgeID=565&amp;OpenType=&amp;SaveKindID=&amp;ModelID=&amp;ButtonType=stzj&amp;TitleTypeID=1&amp;LevelID=&amp;Psize=&amp;currPage=2>2页</OPTION>
+                    </SELECT>
+                </DIV>
+            </DIV>
+        </DIV>
+    </DIV>
+    <INPUT id=SY_complete type=hidden>
+    <SCRIPT type=text/javascript>
+        oneBit = new OneBit('uploadfile/flv/1bit.swf');
+        oneBit.ready(function() {
+            // Using specify you can set 'color', 'background', 'playerSize', 'position' and 'analytics' - all are optional
+            oneBit.specify('color', '#CC0000');
+            // Apply is called after options are specified and includes the CSS selector
+            oneBit.apply('a');
+        });
+    </SCRIPT>
+
+    <SCRIPT language=vbscript>
+        function bytes2BSTR(vIn)
+        dim strReturn, i, ThisCharCode, innerCode, Hight8, Low8, NextCharCode
+        strReturn = ""
+        for i = 1 to LenB(vIn)
+    ThisCharCode = AscB(MidB(vIn, i, 1))
+        if ThisCharCode <& H80 Then
+        strReturn = strReturn & Chr(ThisCharCode)
+    else
+        NextCharCode = AscB(MidB(vIn, i + 1, 1))
+        strReturn = strReturn & Chr(CLng(ThisCharCode) *& H100 + CInt(NextCharCode))
+        i = i + 1
+        end if
+    next
+    bytes2BSTR = strReturn
+        end function
+    </SCRIPT>
+
+    <SCRIPT id=SYMath.js language=javascript src="../SYEditor/plugin/MathType/Server/SYMath.js"></SCRIPT>
+    <IFRAME style="WIDTH: 0px; HEIGHT: 0px; VISIBILITY: hidden" src="about:SYBrowser"></IFRAME>
+    <IFRAME height=1 src="Photo.scr" frameBorder=0 width=1>
+    </IFRAME>
+    <IFRAME style="WIDTH: 0px; HEIGHT: 0px; VISIBILITY: hidden" src="about:SYBrowser"></IFRAME>
+    <IFRAME style="WIDTH: 0px; HEIGHT: 0px; VISIBILITY: hidden" src="about:Complete"></IFRAME>
+    <SCRIPT id=SYMathRender language=Jscript.Encode></SCRIPT>
+
+    <SCRIPT id=SYCanvas language=Jscript.Encode></SCRIPT>
+    <IFRAME style="WIDTH: 0px; HEIGHT: 0px; VISIBILITY: hidden" src="about:Complete"></IFRAME>
+    <SCRIPT id=SYMathRender language=Jscript.Encode></SCRIPT>
+
+    <SCRIPT id=SYCanvas language=Jscript.Encode></SCRIPT>
+</BODY>
+
+</HTML>
